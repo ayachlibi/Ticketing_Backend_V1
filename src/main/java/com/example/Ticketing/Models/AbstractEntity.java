@@ -21,15 +21,15 @@ import java.time.LocalDate;
  public abstract class AbstractEntity implements Serializable {
 
 
-   @Id
-   @Field("_id")
-   @JsonIgnore
-   private String idMongo;
+    @Id
+    @Field("_id")
+    @JsonIgnore
+    private String idMongo;
 
-   @Field("my_object_id")
-   private Long id;
+    @Field("my_object_id")
+    private Long id;
 
-   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @CreatedDate
     private LocalDate Created_At;
 

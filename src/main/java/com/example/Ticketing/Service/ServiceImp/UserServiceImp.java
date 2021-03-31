@@ -139,6 +139,7 @@ public class UserServiceImp implements UserService {
         if(userRepository.existsByUsername(user.getUsername())){
             log.error("This Username Exist ");
         }
+        user.setId(sequenceGeneratorService.generateSequence(user.SEQUENCE_NAME));
         return userRepository.save(user);
     }
 

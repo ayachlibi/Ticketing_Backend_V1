@@ -6,9 +6,11 @@ import com.example.Ticketing.Exceptions.ErrorCodes;
 import com.example.Ticketing.Exceptions.InvalidEntityException;
 import com.example.Ticketing.Models.Client;
 import com.example.Ticketing.Models.SuperAdmin;
+import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.SuperAdminRepository;
 import com.example.Ticketing.Repository.UserRepository;
 import com.example.Ticketing.Service.SuperAdminService;
+import com.example.Ticketing.Service.UserService;
 import com.example.Ticketing.Validators.SuperAdminValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,14 +31,17 @@ public class SuperAdminServiceImp implements SuperAdminService {
 
     private SequenceGeneratorService sequenceGeneratorService;
 
+    private UserService userService;
     @Autowired
     public SuperAdminServiceImp(
              UserRepository userRepository,
              SuperAdminRepository superAdminRepository,
-             SequenceGeneratorService sequenceGeneratorService){
+             SequenceGeneratorService sequenceGeneratorService,
+             UserService userService){
         this.superAdminRepository=superAdminRepository;
         this.userRepository=userRepository;
         this.sequenceGeneratorService=sequenceGeneratorService;
+        this.userService=userService;
     }
 
     @Override
@@ -58,6 +63,16 @@ public class SuperAdminServiceImp implements SuperAdminService {
             return null;
         }
         superAdmin.setId(sequenceGeneratorService.generateSequence(superAdmin.SEQUENCE_NAME));
+
+        User u= new User();
+        u.setEmail(superAdmin.getEmail());
+        u.setName(superAdmin.getName());
+        u.setFamilyname(superAdmin.getFamilyname());
+        u.setPhone_number(superAdmin.getPhone_number());
+        u.setPassword(superAdmin.getPassword());
+        u.setRole("Super Admin");
+        u.setUsername(superAdmin.getUsername());
+        userService.saveUser(u);
         return superAdminRepository.save(superAdmin);
     }
 

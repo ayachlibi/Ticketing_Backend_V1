@@ -4,9 +4,13 @@ import com.example.Ticketing.Config.SequenceGeneratorService;
 import com.example.Ticketing.Exceptions.EntityNotFoundException;
 import com.example.Ticketing.Exceptions.ErrorCodes;
 import com.example.Ticketing.Exceptions.InvalidEntityException;
+import com.example.Ticketing.Models.Admin;
 import com.example.Ticketing.Models.CSE;
+import com.example.Ticketing.Models.Client;
+import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.*;
 import com.example.Ticketing.Service.CSEService;
+import com.example.Ticketing.Service.UserService;
 import com.example.Ticketing.Validators.CSEValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +38,7 @@ public class CSEServiceImp implements CSEService {
 
     private SequenceGeneratorService sequenceGeneratorService;
 
+    private UserService userService;
     @Autowired
     public CSEServiceImp(
              UserRepository userRepository,
@@ -41,13 +46,22 @@ public class CSEServiceImp implements CSEService {
              ClientRepository clientRepository,
              TicketRepository ticketRepository,
              AdminRepository adminRepository,
-             SequenceGeneratorService sequenceGeneratorService) {
+             SequenceGeneratorService sequenceGeneratorService,
+             UserService userService) {
+
         this.cseRepository=cseRepository;
+
         this.userRepository=userRepository;
+
         this.clientRepository=clientRepository;
+
         this.ticketRepository=ticketRepository;
+
         this.adminRepository=adminRepository;
+
         this.sequenceGeneratorService=sequenceGeneratorService;
+
+        this.userService=userService;
     }
 
         //Add a CSE
@@ -72,16 +86,22 @@ public class CSEServiceImp implements CSEService {
         }
 
         //Check if the client exists
-        if (!clientRepository.existsById(cse.getClient().getId())){
+        Client c= cse.getClient();
+        System.out.println(c.getId());
+        System.out.println(clientRepository.existsById(c.getId()));
+        if (!clientRepository.existsById(c.getId())){
             throw new EntityNotFoundException("This Client does not Exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
 
         //Check if the Admin exists
-        if (!adminRepository.existsById(cse.getAdmin().getId())){
+        Admin a=cse.getAdmin();
+
+        if (!adminRepository.existsById(a.getId())){
             throw new EntityNotFoundException("This Admin does not Exist",ErrorCodes.ADMIN_NOT_FOUND);
         }
 
         cse.setId(sequenceGeneratorService.generateSequence(cse.SEQUENCE_NAME));
+
         CSE SavedCse=cseRepository.save(cse);
 
         //In case a CSE has a ticket
@@ -92,6 +112,16 @@ public class CSEServiceImp implements CSEService {
             });
         }
 
+
+        User u= new User();
+        u.setEmail(cse.getEmail());
+        u.setName(cse.getName());
+        u.setFamilyname(cse.getFamilyname());
+        u.setPhone_number(cse.getPhone_number());
+        u.setPassword(cse.getPassword());
+        u.setRole("CSE");
+        u.setUsername(cse.getUsername());
+        userService.saveUser(u);
         return SavedCse;
 
     }

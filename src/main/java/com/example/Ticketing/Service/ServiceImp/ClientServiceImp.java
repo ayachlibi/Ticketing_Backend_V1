@@ -12,6 +12,7 @@ import com.example.Ticketing.Repository.ClientRepository;
 import com.example.Ticketing.Repository.TicketRepository;
 import com.example.Ticketing.Repository.UserRepository;
 import com.example.Ticketing.Service.ClientService;
+import com.example.Ticketing.Service.UserService;
 import com.example.Ticketing.Validators.UserValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +39,26 @@ public class    ClientServiceImp implements ClientService {
 
     private SequenceGeneratorService sequenceGeneratorService;
 
+    private UserService userService;
     @Autowired
     public ClientServiceImp(ClientRepository clientRepository,
                             UserRepository userRepository,
                             TicketRepository ticketRepository,
                             CSERepository cseRepository,
-                            SequenceGeneratorService sequenceGeneratorService){
+                            SequenceGeneratorService sequenceGeneratorService,
+                            UserService userService){
 
         this.clientRepository=clientRepository;
+
         this.cseRepository=cseRepository;
+
         this.userRepository=userRepository;
+
         this.ticketRepository=ticketRepository;
+
         this.sequenceGeneratorService=sequenceGeneratorService;
+
+        this.userService= userService;
     }
 
     //Add a Client
@@ -76,9 +85,8 @@ public class    ClientServiceImp implements ClientService {
         }
 
         client.setId(sequenceGeneratorService.generateSequence(client.SEQUENCE_NAME));
+        Client SavedClient= clientRepository.save(client);
 
-        return clientRepository.save(client);
-/*
         //In case a Client has a ticket
         if (client.getTickets()!= null){
             client.getTickets().forEach(tckt->{
@@ -94,7 +102,17 @@ public class    ClientServiceImp implements ClientService {
                 cseRepository.save(cse);
             });
         }
-*/
+
+        User u= new User();
+        u.setEmail(client.getEmail());
+        u.setName(client.getName());
+        u.setFamilyname(client.getFamilyname());
+        u.setPhone_number(client.getPhone_number());
+        u.setPassword(client.getPassword());
+        u.setRole("Client");
+        u.setUsername(client.getUsername());
+        userService.saveUser(u);
+        return clientRepository.save(client);
 
     }
 

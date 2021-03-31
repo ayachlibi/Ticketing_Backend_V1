@@ -6,10 +6,12 @@ import com.example.Ticketing.Exceptions.ErrorCodes;
 import com.example.Ticketing.Exceptions.InvalidEntityException;
 import com.example.Ticketing.Models.Admin;
 import com.example.Ticketing.Models.CSE;
+import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.AdminRepository;
 import com.example.Ticketing.Repository.CSERepository;
 import com.example.Ticketing.Repository.UserRepository;
 import com.example.Ticketing.Service.AdminService;
+import com.example.Ticketing.Service.UserService;
 import com.example.Ticketing.Validators.AdminValidator;
 import com.example.Ticketing.Validators.CSEValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -33,10 +35,13 @@ public class AdminServiceImp implements AdminService {
 
     private SequenceGeneratorService sequenceGeneratorService;
 
+    private UserService userService;
+
     public AdminServiceImp (UserRepository userRepository,
                             AdminRepository adminRepository,
                             CSERepository cseRepository,
-                            SequenceGeneratorService sequenceGeneratorService){
+                            SequenceGeneratorService sequenceGeneratorService,
+                            UserService userService){
 
         this.adminRepository=adminRepository;
 
@@ -46,6 +51,7 @@ public class AdminServiceImp implements AdminService {
 
         this.userRepository=userRepository;
 
+        this.userService=userService;
     }
 
     @Override
@@ -74,6 +80,15 @@ public class AdminServiceImp implements AdminService {
 
         Admin SavedAdmin =adminRepository.save(admin);
 
+        User u= new User();
+        u.setEmail(admin.getEmail());
+        u.setName(admin.getName());
+        u.setFamilyname(admin.getFamilyname());
+        u.setPhone_number(admin.getPhone_number());
+        u.setPassword(admin.getPassword());
+        u.setRole("Admin");
+        u.setUsername(admin.getUsername());
+        userService.saveUser(u);
         return SavedAdmin;
 
 
