@@ -85,6 +85,7 @@ public class    ClientServiceImp implements ClientService {
         }
 
         client.setId(sequenceGeneratorService.generateSequence(client.SEQUENCE_NAME));
+        client.setRole("Client");
         Client SavedClient= clientRepository.save(client);
 
         //In case a Client has a ticket

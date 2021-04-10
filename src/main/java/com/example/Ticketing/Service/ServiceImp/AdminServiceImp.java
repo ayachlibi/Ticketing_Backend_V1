@@ -77,7 +77,7 @@ public class AdminServiceImp implements AdminService {
         }
 
         admin.setId(sequenceGeneratorService.generateSequence(admin.SEQUENCE_NAME));
-
+        admin.setRole("Admin");
         Admin SavedAdmin =adminRepository.save(admin);
 
         User u= new User();

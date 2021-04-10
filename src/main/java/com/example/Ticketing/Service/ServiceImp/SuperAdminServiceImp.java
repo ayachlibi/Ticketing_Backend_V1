@@ -63,7 +63,7 @@ public class SuperAdminServiceImp implements SuperAdminService {
             return null;
         }
         superAdmin.setId(sequenceGeneratorService.generateSequence(superAdmin.SEQUENCE_NAME));
-
+        superAdmin.setRole("Super Admin");
         User u= new User();
         u.setEmail(superAdmin.getEmail());
         u.setName(superAdmin.getName());

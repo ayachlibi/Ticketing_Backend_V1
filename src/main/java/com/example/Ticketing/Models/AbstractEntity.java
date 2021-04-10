@@ -9,9 +9,11 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Data
 
@@ -22,19 +24,15 @@ import java.time.LocalDate;
 
 
     @Id
-    @Field("_id")
-    @JsonIgnore
-    private String idMongo;
-
     @Field("my_object_id")
     private Long id;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @CreatedDate
-    private LocalDate Created_At;
+    private Date Created_At;
 
     @LastModifiedDate
-    private LocalDate Updated_At;
+    private Date Updated_At;
 
 
 }

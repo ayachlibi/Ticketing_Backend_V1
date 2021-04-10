@@ -86,21 +86,19 @@ public class CSEServiceImp implements CSEService {
         }
 
         //Check if the client exists
-        Client c= cse.getClient();
-        System.out.println(c.getId());
-        System.out.println(clientRepository.existsById(c.getId()));
-        if (!clientRepository.existsById(c.getId())){
+
+        if (!(userRepository.existsByUsername(cse.getClient().getUsername()))){
             throw new EntityNotFoundException("This Client does not Exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
 
         //Check if the Admin exists
-        Admin a=cse.getAdmin();
 
-        if (!adminRepository.existsById(a.getId())){
+        if (!(userRepository.existsByUsername(cse.getAdmin().getUsername()))){
             throw new EntityNotFoundException("This Admin does not Exist",ErrorCodes.ADMIN_NOT_FOUND);
         }
 
         cse.setId(sequenceGeneratorService.generateSequence(cse.SEQUENCE_NAME));
+        cse.setRole("CSE");
 
         CSE SavedCse=cseRepository.save(cse);
 

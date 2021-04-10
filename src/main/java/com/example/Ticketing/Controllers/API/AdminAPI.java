@@ -2,11 +2,13 @@ package com.example.Ticketing.Controllers.API;
 
 import com.example.Ticketing.Models.Admin;
 import com.example.Ticketing.Models.Client;
+import io.swagger.annotations.Api;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+
 
 public interface AdminAPI {
 

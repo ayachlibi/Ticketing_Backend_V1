@@ -25,7 +25,13 @@ public class CSEValidator {
         if (cse == null || !StringUtils.hasLength(cse.getPassword())) {
             errors.add("Please fill the Password Field");
         }
+        if (cse == null || cse.getAdmin()==null) {
+            errors.add("Please fill the Password Field");
+        }
 
+        if (cse == null || cse.getClient()==null) {
+            errors.add("Please fill the Password Field");
+        }
         return errors;
     }
 }

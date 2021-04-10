@@ -56,7 +56,7 @@ public class TicketServiceImp implements TicketService {
             log.error("Ticket is not valid {}", ticket);
             throw new InvalidEntityException("The Ticket is Invalid ", ErrorCodes.TICKET_NOT_VALID, errors);
         }
-
+/*
         //Make sure that the Client Exists
         Optional<Client> client = clientRepository.findById(ticket.getClient().getId());
         if (client.isEmpty()) {
@@ -71,7 +71,7 @@ public class TicketServiceImp implements TicketService {
             throw new EntityNotFoundException("No CSE with the ID" + cse.get().getId(), ErrorCodes.CSE_NOT_FOUND);
         }
 
-
+*/
         ticket.setId(sequenceGeneratorService.generateSequence(ticket.SEQUENCE_NAME));
         Ticket SavedTicket=ticketRepository.save(ticket);
 
