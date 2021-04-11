@@ -2,10 +2,7 @@ package com.example.Ticketing;
 
 import com.example.Ticketing.Models.*;
 import com.example.Ticketing.Repository.*;
-import com.example.Ticketing.Service.AdminService;
-import com.example.Ticketing.Service.CSEService;
-import com.example.Ticketing.Service.ClientService;
-import com.example.Ticketing.Service.TicketService;
+import com.example.Ticketing.Service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -41,7 +38,8 @@ public class TicketingApplication implements CommandLineRunner {
     private ClientService clientService;
     @Autowired
     private TicketService ticketService;
-
+    @Autowired 
+    private UserService userService;
     @Override
     public void run(String... args) throws Exception {
 
@@ -65,26 +63,31 @@ public class TicketingApplication implements CommandLineRunner {
         adminService.addAdmin(a1);
 
         CSE cse1= new CSE();
-        cse1.setUsername("AyaChlib");
+        cse1.setUsername("AyaChlibi");
         cse1.setPassword("AC");
         cse1.setClient(c1);
         cse1.setName("Aya");
         cse1.setFamilyname("Chlibi");
-        cse1.setEmail("ayachlib@gmail.com");
+        cse1.setEmail("ayachlibi@gmail.com");
         cse1.setPhone_number(55612351);
         cse1.setAdmin(a1);
         cseService.addCSE(cse1);
 
         CSE cse2= new CSE();
-        cse2.setUsername("DouaaMam");
+        cse2.setUsername("DouaaMami");
         cse2.setPassword("DM");
         cse2.setClient(c1);
         cse2.setName("Douaa");
         cse2.setFamilyname("Mami");
-        cse2.setEmail("douaamam@gmail.com");
+        cse2.setEmail("douaamami@gmail.com");
         cse2.setPhone_number(22315203);
         cse2.setAdmin(a1);
         cseService.addCSE(cse2);
+
+
+
+        User user= userService.login("DouaaMami","DM");
+        System.out.println(user.toString());
 
     }
 }

@@ -53,4 +53,9 @@ public class UserController implements UserAPI {
     public List<User> findAllUsers() {
         return userService.findAllUsers();
     }
+
+    @Override
+    public User login(String username, String password) {
+        return userService.login(username,password);
+    }
 }

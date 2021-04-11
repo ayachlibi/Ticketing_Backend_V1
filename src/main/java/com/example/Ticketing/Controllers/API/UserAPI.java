@@ -15,22 +15,16 @@ public interface UserAPI {
     @DeleteMapping(value = "/User/Delete/{idUser}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteUser(@PathVariable("idUser") Long id);
 
-    // TODO if the implementations are necessary get back and have the controllers
-  /*  @GetMapping (value = "/User/{UserName}/{Password}")
-    public User findByUsernameAndPassword(String UserName, String Password);
-*/
-
-//    public User findByUsername(String UserName);
-
-//    public User findByNameAndFamilyName(String Name,String FamilyName);
-
-    @PutMapping(value = "User/Update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/User/Update", produces = MediaType.APPLICATION_JSON_VALUE)
     public User updateUser(@RequestBody User user);
 
-    @GetMapping(value = "User/{idUser}")
+    @GetMapping(value = "/User/{idUser}")
     public Optional<User> findUserById(@PathVariable("idUser") Long id);
 
-    @GetMapping(value = "User/all")
+    @GetMapping(value = "/User/all")
     public List<User> findAllUsers();
+
+    @GetMapping(value = "/User/{username}/{password}")
+    public User login(@PathVariable String username , @PathVariable String password);
 
 }

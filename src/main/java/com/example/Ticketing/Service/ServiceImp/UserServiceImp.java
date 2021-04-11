@@ -69,59 +69,6 @@ public class UserServiceImp implements UserService {
         userRepository.deleteById(id);
     }
 
-/*    @Override
-    public User findByUsernameAndPassword(String UserName, String Password) {
-
-        if(UserName==null){
-            log.error("The Username is null");
-            return null;
-        }
-
-        if(Password==null){
-            log.error("The Password is null");
-            return null;
-        }
-
-        if (!userRepository.existsByUserNameAndPassword(UserName,Password)){
-            throw new EntityNotFoundException("Please verify your Username and Password",ErrorCodes.USER_NOT_FOUND);
-
-        }
-
-        return userRepository.findByUsernameAndPassword(UserName,Password);
-
-    }*/
-
-
-    //Find by Username
-
-    /*@Override
-    public User findByUsername(String UserName) {
-        if(UserName == null){
-            log.error("The Username is null");
-            return null;
-        }
-        if(!userRepository.existsByUsername(UserName)){
-            throw new EntityNotFoundException("No User Found with this Username",ErrorCodes.USER_NOT_FOUND);
-        }
-        return userRepository.findByUsername(UserName);
-    }*/
-
-    //Find by name and family name
-
-    /*@Override
-    public User findByNameAndFamilyName(String Name, String FamilyName) {
-        if(Name==null){
-            log.error("The Name is null");
-            return null;
-        }
-        if(FamilyName==null){
-            log.error("The Family name  is null");
-            return null;
-        }
-
-        return userRepository.findByNameAndFamilyName(Name, FamilyName);
-    }*/
-
     // update A user
 
     @Override
@@ -162,5 +109,19 @@ public class UserServiceImp implements UserService {
         return userRepository.findAll().stream()
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public User login(String username, String password)  {
+        User user = userRepository.findByUsernameAndPassword(username,password);
+        if (user == null) {
+            if (userRepository.findByUsername(username) == null) {
+                throw new EntityNotFoundException("Please verify your username and password", ErrorCodes.USER_NOT_FOUND);
+            }
+            else{
+                throw new EntityNotFoundException("Please verify your password", ErrorCodes.USER_NOT_FOUND);
+            }
+        }
+            return user;
+        }
 
 }

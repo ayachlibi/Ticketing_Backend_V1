@@ -17,13 +17,13 @@ public interface CSEAPI {
     @DeleteMapping(value = "/CSE/Delete/{idCSE}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteCSE(@PathVariable("idCSE") Long id);
 
-    @PutMapping(value = "CSE/Update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/CSE/Update", produces = MediaType.APPLICATION_JSON_VALUE)
     public CSE updateCSE(@RequestBody CSE cse);
 
-    @GetMapping(value = "CSE/{idCSE}")
+    @GetMapping(value = "/CSE/{idCSE}")
     public Optional<CSE> findCSEById(@PathVariable("idCSE") Long id);
 
-    @GetMapping(value = "CSE/all")
+    @GetMapping(value = "/CSE/all")
     public List<CSE> findAllCSEs();
 
 }

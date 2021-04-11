@@ -14,13 +14,13 @@ public interface ClientAPI {
     @DeleteMapping(value = "/Client/Delete/{idClient}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteClient(@PathVariable("idClient") Long id);
 
-    @PutMapping(value = "Client/Update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/Client/Update", produces = MediaType.APPLICATION_JSON_VALUE)
     public Client updateClient(@RequestBody Client client);
 
-    @GetMapping(value = "Client/{idClient}")
+    @GetMapping(value = "/Client/{idClient}")
     public Optional<Client> findClientById(@PathVariable("idClient") Long id);
 
-    @GetMapping(value = "Client/all")
+    @GetMapping(value = "/Client/all")
     public List<Client> findAllClients();
 
 

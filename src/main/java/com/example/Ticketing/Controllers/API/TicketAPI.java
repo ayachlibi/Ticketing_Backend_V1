@@ -16,7 +16,7 @@ public interface TicketAPI {
     @DeleteMapping (value = "/Ticket/Delete/{idTicket}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteTicket(@PathVariable("idTicket") Long id);
 
-    @PutMapping(value = "Ticket/Update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/Ticket/Update", produces = MediaType.APPLICATION_JSON_VALUE)
     public Ticket updateTicket(@RequestBody Ticket ticket);
 
     @GetMapping (value = "/Ticket/all", produces = MediaType.APPLICATION_JSON_VALUE)

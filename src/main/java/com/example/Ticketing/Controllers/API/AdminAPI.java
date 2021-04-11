@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface AdminAPI {
 
-    @PostMapping(value = "/Admin/AddaNewAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/Admin/AddNewAdmin", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public Admin saveAdmin(@RequestBody Admin admin);
 
     @DeleteMapping(value = "/Admin/Delete/{idAdmin}", produces = MediaType.APPLICATION_JSON_VALUE)

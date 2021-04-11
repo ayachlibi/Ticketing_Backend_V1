@@ -17,7 +17,7 @@ public interface MessageAPI {
     @DeleteMapping(value = "/Message/Delete/{idMessage}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void deleteMessage(@PathVariable("idMessage") Long id);
 
-    @PutMapping(value = "Message/Update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/Message/Update", produces = MediaType.APPLICATION_JSON_VALUE)
     public Message updateMessage(@RequestBody Message message);
 
     @GetMapping(value = "/Message/all", produces = MediaType.APPLICATION_JSON_VALUE)
