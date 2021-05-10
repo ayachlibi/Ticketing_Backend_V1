@@ -2,21 +2,30 @@ package com.example.Ticketing.Repository;
 
 import com.example.Ticketing.Models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Repository
 
 public interface UserRepository extends MongoRepository<User,Long> {
 
-    public User findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
-    public User findByEmail(String email);
+    User findByEmail(String email);
 
-    public boolean existsByUsername (String username);
+    boolean existsByUsername (String username);
 
-    public boolean existsByEmail (String email);
+    boolean existsByEmail (String email);
 
-    public boolean existsByUsernameAndPassword(String username,String password);
+    boolean existsByUsernameAndPassword(String username,String password);
 
-    public User findByUsernameAndPassword (String username, String password);
+    User findByUsernameAndPassword (String username, String password);
+
+    @Transactional
+    @Query("UPDATE AppUser a " +
+            "SET a.enabled = TRUE WHERE a.email = ?1")
+    int enableUser(String email);
 }

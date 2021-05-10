@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Data
 
-@Document(collection = "Super_Admins")
+@Document(collection = "General Manager")
 
 @EqualsAndHashCode
 
@@ -20,7 +20,6 @@ import java.io.Serializable;
 @Setter
 
 @ToString
-
 
 
 public class General_Manager extends User implements Serializable {

@@ -10,6 +10,7 @@ import java.util.List;
 public class TicketValidator {
     public static List<String> validator(Ticket ticket){
         List <String> errors= new ArrayList<>();
+
         if(ticket == null ||!StringUtils.hasLength(ticket.getTitle())){
             errors.add("Please fill the Title Field");
         }
@@ -24,12 +25,6 @@ public class TicketValidator {
         }
         if(ticket == null ||!StringUtils.hasLength(ticket.getType())){
             errors.add("Please fill the Type Field");
-        }
-        if(ticket == null ||ticket.getClient()==null){
-            errors.add("Please add the Owner ");
-        }
-        if(ticket == null ||ticket.getCse()==null){
-            errors.add("Please add the CSE ");
         }
 
         return errors;

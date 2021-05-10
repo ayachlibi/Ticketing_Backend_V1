@@ -1,2 +1,10 @@
-package com.example.Ticketing.Controllers;public class UserController {
+package com.example.Ticketing.Controllers;
+
+
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+
+public class UserController{
+
 }

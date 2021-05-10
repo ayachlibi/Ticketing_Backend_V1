@@ -25,7 +25,6 @@ import java.util.List;
 
 @ToString
 
-
 @TypeAlias("Client")
 
 public class Client extends User implements Serializable {
@@ -36,10 +35,9 @@ public class Client extends User implements Serializable {
 
     private String enterprise;
 
+    private boolean accepted = false ;
+
     @DBRef(lazy = true)
-    private List<CSE> cses;
-
-    private List<Ticket> tickets;
-
+    private List<Project> projects;
 
 }

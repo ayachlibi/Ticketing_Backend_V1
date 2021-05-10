@@ -26,42 +26,39 @@ import java.util.List;
 
 @ToString
 
-
-
 @TypeAlias("Ticket")
-public class Ticket extends AbstractEntity implements Serializable {
 
+public class Ticket extends AbstractEntity implements Serializable {
 
     @Transient
     public static final String SEQUENCE_NAME = "Ticket_sequence";
 
-    private String Title;
+    private String title;
 
-    private String Description;
+    private String description;
 
-    private String Category;
+    private String category;
 
-    private String Type;
+    private String type;
 
-    private String Status;
+    private String status;
 
-    private String Priority ;
+    private String priority;
 
-    private boolean SLA;
+    private int sla;
 
-    private LocalDate Start_Date;
+    private LocalDate start_Date;
 
-    private LocalDate End_Date;
+    private LocalDate end_Date;
 
-    private LocalDate DeadLine;
+    private LocalDate deadLine;
 
-    private Float Rating;
+    private LocalDate update_at;
+
+    private Float rating;
 
     @DBRef(lazy = true)
-    private Client client;
-
-    @DBRef(lazy = true)
-    private CSE cse;
+    private Project project;
 
     private List<Message> messages;
 

@@ -25,21 +25,14 @@ import java.util.List;
 
 @ToString
 
-
 @TypeAlias("CSE")
 
 public class CSE extends User implements Serializable {
-
-
     @Transient
     public static final String SEQUENCE_NAME = "CSE_sequence";
 
-    @DBRef(lazy = true)
-    private Client client;
+    private boolean accepted = false;
 
-    @DBRef(lazy = true)
-    private Admin admin;
-
-    private List<Ticket> tickets;
+    private List<Project> projects;
 
 }

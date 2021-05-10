@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 
-public interface SuperAdminRepository extends MongoRepository<General_Manager,Long> {
+public interface General_ManagerRepository extends MongoRepository<General_Manager,Long> {
 
 }

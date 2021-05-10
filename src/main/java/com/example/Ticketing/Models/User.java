@@ -1,26 +1,18 @@
 package com.example.Ticketing.Models;
 
+import com.example.Ticketing.Role.Role;
 import lombok.*;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-//import org.springframework.security.core.GrantedAuthority;
-//import org.springframework.security.core.authority.SimpleGrantedAuthority;
-//import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 
 @Document (collection = "Users")
-
-@NoArgsConstructor
-
-@AllArgsConstructor
 
 @EqualsAndHashCode
 
@@ -30,8 +22,10 @@ import java.util.List;
 
 @ToString
 
+@NoArgsConstructor
 
-public class User extends AbstractEntity  {
+
+public class User extends AbstractEntity {
 
     @Transient
     public static final String SEQUENCE_NAME = "User_sequence";
@@ -50,6 +44,29 @@ public class User extends AbstractEntity  {
 
     private String password;
 
-    private String role;
+    @DBRef
+    private Set<Role> roles= new HashSet<>();
+
+
+
+    public User(String name,
+                String familyname,
+                String email,
+                long phone_number,
+                String username,
+                String password) {
+        this.name = name;
+        this.familyname = familyname;
+        this.email = email;
+        this.phone_number = phone_number;
+        this.username = username;
+        this.password = password;
+
+    }
+
+    public void setUsername(String name, String familyname) {
+        this.username = name + familyname;
+    }
+
 
 }

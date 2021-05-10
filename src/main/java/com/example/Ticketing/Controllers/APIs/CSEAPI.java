@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
-public interface CSEAPi {
+public interface CSEAPI {
 
     @PostMapping(value = "/CSE/RegisterCSE", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> registerCSE(@RequestBody CSERequestModel cse);

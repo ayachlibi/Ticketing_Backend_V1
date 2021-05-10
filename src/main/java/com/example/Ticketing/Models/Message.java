@@ -25,7 +25,6 @@ import java.io.Serializable;
 
 @ToString
 
-
 @TypeAlias("Message")
 
 public class Message extends AbstractEntity implements Serializable {
@@ -33,8 +32,7 @@ public class Message extends AbstractEntity implements Serializable {
     @Transient
     public static final String SEQUENCE_NAME = "Message_sequence";
 
-
-    private String Description;
+    private String description;
 
     @DBRef(lazy = true)
     private Ticket ticket;

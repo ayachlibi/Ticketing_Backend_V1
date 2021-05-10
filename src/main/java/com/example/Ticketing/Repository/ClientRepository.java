@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface ClientRepository extends MongoRepository<Client,Long> {
 
-
+    Client findByUsername(String username);
 }

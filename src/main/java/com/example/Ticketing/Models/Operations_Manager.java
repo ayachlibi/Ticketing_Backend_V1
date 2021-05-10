@@ -12,11 +12,10 @@ import java.util.List;
 
 @Data
 
-@Document(collection = "Admins")
+@Document(collection = "Operations Managers")
 
 @NoArgsConstructor
 
-@AllArgsConstructor
 
 @EqualsAndHashCode
 
@@ -33,8 +32,6 @@ public class Operations_Manager extends User implements Serializable {
 
     @Transient
     public static final String SEQUENCE_NAME = "Operations_Manager_sequence";
-
-    private List<CSE> cses;
 
 
 }

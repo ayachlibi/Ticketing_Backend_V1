@@ -1,14 +1,14 @@
 package com.example.Ticketing.Validators;
 
-import com.example.Ticketing.Models.CSE;
-import com.example.Ticketing.Models.Client;
+
+import com.example.Ticketing.RequestModel.CSERequestModel;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CSEValidator {
-    public static List<String> validator(CSE cse) {
+    public static List<String> validator(CSERequestModel cse) {
         List<String> errors = new ArrayList<>();
         if (cse == null || !StringUtils.hasLength(cse.getName())) {
             errors.add("Please fill the Name Field");
@@ -19,19 +19,13 @@ public class CSEValidator {
         if (cse == null || !StringUtils.hasLength(cse.getEmail())) {
             errors.add("Please fill the Email Field");
         }
-        if (cse == null || !StringUtils.hasLength(cse.getUsername())) {
-            errors.add("Please fill the Username Field");
-        }
         if (cse == null || !StringUtils.hasLength(cse.getPassword())) {
             errors.add("Please fill the Password Field");
         }
-        if (cse == null || cse.getAdmin()==null) {
-            errors.add("Please fill the Password Field");
+        if (cse == null || cse.getPhone_number()==null) {
+            errors.add("Please fill the phone number Field");
         }
 
-        if (cse == null || cse.getClient()==null) {
-            errors.add("Please fill the Password Field");
-        }
         return errors;
     }
 }

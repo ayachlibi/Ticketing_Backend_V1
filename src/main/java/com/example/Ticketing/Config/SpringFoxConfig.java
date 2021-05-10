@@ -2,6 +2,7 @@ package com.example.Ticketing.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.spi.DocumentationType;
@@ -12,7 +13,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 
 @EnableSwagger2
 @Configuration
-public class SpringFoxConfig {
+public class SpringFoxConfig  {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

@@ -1,8 +1,8 @@
-package com.example.Ticketing.Config.Security;
+package com.example.Ticketing.Role;
 
 public enum UserRole {
-    CEO,
-    MANAGER,
+    GENERAL_DIRECTOR,
+    OPERATIONS_MANAGER,
     CSE,
     CLIENT,
 }

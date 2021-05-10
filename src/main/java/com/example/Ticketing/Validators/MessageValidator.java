@@ -8,16 +8,13 @@ import java.util.List;
 
 public class MessageValidator {
     public static List<String> validator (Message message){
+
         List<String> errors= new ArrayList<>();
-            if (message == null || !StringUtils.hasLength(message.getDescription())) {
+
+        if (message == null || !StringUtils.hasLength(message.getDescription())) {
                 errors.add("Please fill the Description Field");
             }
-        if (message == null || message.getTicket()==null) {
-            errors.add("Please add a Ticket");
-        }
-        if (message == null || message.getUser()==null) {
-            errors.add("Please add a User");
-        }
+
         return errors;
     }
 }

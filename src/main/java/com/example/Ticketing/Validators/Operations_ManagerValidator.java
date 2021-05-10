@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdminValidator {
+public class Operations_ManagerValidator {
     public static List<String> validator(Operations_Manager operationsManager) {
         List<String> errors = new ArrayList<>();
         if (operationsManager == null || !StringUtils.hasLength(operationsManager.getName())) {
