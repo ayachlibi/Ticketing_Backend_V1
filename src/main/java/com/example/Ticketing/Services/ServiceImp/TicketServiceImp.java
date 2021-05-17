@@ -25,7 +25,7 @@ public class TicketServiceImp implements TicketService {
     SequenceGeneratorService service;
 
     @Override
-    public Ticket addTicket(Ticket ticket) {
+    public Ticket add(Ticket ticket) {
 
         List<String> errors = TicketValidator.validator(ticket);
 
@@ -39,13 +39,13 @@ public class TicketServiceImp implements TicketService {
     }
 
     @Override
-    public Ticket updateTicket(Ticket ticket) {
+    public Ticket update(Ticket ticket) {
 
         return ticketRepository.save(ticket);
     }
 
     @Override
-    public void deleteTicket(Long id) {
+    public void delete(Long id) {
         if (!ticketRepository.existsById(id)){
             throw new EntityNotFoundException("This Id doesn't match with any existing ticket ",ErrorCodes.TICKET_NOT_FOUND);
         }

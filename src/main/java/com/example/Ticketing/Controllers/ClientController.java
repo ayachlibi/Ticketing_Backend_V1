@@ -29,23 +29,23 @@ public class ClientController implements ClientAPI {
     }
 
     @Override
-    public ResponseEntity<?> registerClient(ClientRequestModel client) {
-        return clientService.registerClient(client);
+    public Client registerClient(ClientRequestModel client) {
+        return clientService.register(client);
     }
 
     @Override
     public ResponseEntity<?> acceptClient(Client client) {
-        return clientService.acceptClient(client);
+        return clientService.accept(client);
     }
 
     @Override
     public void deleteClient(Long id) {
-        clientService.deleteClient(id);
+        clientService.delete(id);
     }
 
     @Override
     public Client updateClient(Client client) {
-        return clientService.updateClient(client);
+        return clientService.update(client);
     }
 
     @Override

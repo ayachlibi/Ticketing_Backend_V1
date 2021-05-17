@@ -9,13 +9,13 @@ import java.util.Optional;
 
 public interface ClientService {
 
-    ResponseEntity<?> registerClient(ClientRequestModel clientRequestModel);
+    Client register(ClientRequestModel clientRequestModel);
 
-    ResponseEntity<?> acceptClient(Client client);
+    ResponseEntity<?> accept(Client client);
 
-    void deleteClient(Long id);
+    void delete(Long id);
 
-    Client updateClient(Client client);
+    Client update(Client client);
 
     List<Client> findAll();
 

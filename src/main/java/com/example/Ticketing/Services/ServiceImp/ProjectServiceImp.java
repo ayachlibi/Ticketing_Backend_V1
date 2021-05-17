@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+
 public class ProjectServiceImp implements ProjectService {
 
     @Autowired
@@ -26,7 +27,7 @@ public class ProjectServiceImp implements ProjectService {
     PriorityService priorityService;
 
     @Override
-    public Project createProject(Project project) {
+    public Project create(Project project) {
 
         if(projectRepository.existsByName(project.getName())){
             throw new IllegalStateException("This name already exists");
@@ -41,7 +42,7 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
-    public Project updateProject(Project project) {
+    public Project update(Project project) {
 
         if(!projectRepository.existsById(project.getId())){
             throw new EntityNotFoundException("The project you are trying to update does not exist",
@@ -69,7 +70,7 @@ public class ProjectServiceImp implements ProjectService {
     }
 
     @Override
-    public void deleteProject(Long id) {
+    public void delete(Long id) {
 
         if (!projectRepository.existsById(id)){
             throw new EntityNotFoundException("This Project does not exist", ErrorCodes.PROJECT_NOT_FOUND);

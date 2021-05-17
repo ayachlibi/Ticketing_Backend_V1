@@ -29,17 +29,17 @@ public class TicketController implements TicketAPI {
 
     @Override
     public Ticket saveTicket(Ticket ticket) {
-        return ticketService.addTicket(ticket);
+        return ticketService.add(ticket);
     }
 
     @Override
     public void deleteTicket(Long id) {
-        ticketService.deleteTicket(id);
+        ticketService.delete(id);
     }
 
     @Override
     public Ticket updateTicket(Ticket ticket) {
-        return ticketService.updateTicket(ticket);
+        return ticketService.update(ticket);
     }
 
     @Override

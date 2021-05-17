@@ -45,7 +45,7 @@ public class CSEServiceImp implements CSEService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<?> registerCSE(CSERequestModel cseRequestModel) {
+    public ResponseEntity<?> register (CSERequestModel cseRequestModel) {
         List<String> errors = CSEValidator.validator(cseRequestModel);
         //All necessary information filled
         if (!errors.isEmpty()){
@@ -79,7 +79,7 @@ public class CSEServiceImp implements CSEService {
     }
 
     @Override
-    public ResponseEntity<?> acceptCse(CSE cse) {
+    public ResponseEntity<?> accept(CSE cse) {
         //Accept the client
         cse.setAccepted(true);
 
@@ -98,7 +98,7 @@ public class CSEServiceImp implements CSEService {
     }
 
     @Override
-    public void deleteCse(Long id) {
+    public void delete(Long id) {
 
         if (id == null){
             log.error("CSE ID is null");
@@ -113,17 +113,19 @@ public class CSEServiceImp implements CSEService {
     }
 
     @Override
-    public CSE updateCse(CSE cse) {
-        if (!userRepository.existsById(cse.getId())){
+    public CSE update(CSE cse) {
+        if (!cseRepository.existsById(cse.getId())){
             throw new EntityNotFoundException("The Client you are trying to Update does not exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
         if(userRepository.existsByEmail(cse.getEmail())){
             log.error("This Email Address Exist ");
         }
-        if(userRepository.existsByUsername(cse.getUsername())){
-            log.error("This UserName Exist ");
-        }
-        return cseRepository.save(cse);    }
+        User user= userRepository.findByEmail(cse.getEmail());
+
+
+
+        return cseRepository.save(cse);
+    }
 
     @Override
     public List<CSE> findAll() {
@@ -136,6 +138,7 @@ public class CSEServiceImp implements CSEService {
             log.error("Client ID is null");
             return null;
         }
+
         Optional<CSE> cse= cseRepository.findById(id);
         return Optional.of(cse).orElseThrow(()-> new EntityNotFoundException
                 ("No CSE Found with the ID"+ id,ErrorCodes.CSE_NOT_FOUND));

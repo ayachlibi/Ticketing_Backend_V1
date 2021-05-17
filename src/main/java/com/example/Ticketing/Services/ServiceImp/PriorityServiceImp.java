@@ -9,7 +9,9 @@ import com.example.Ticketing.Repository.ProjectRepository;
 import com.example.Ticketing.Services.PriorityService;
 import com.example.Ticketing.Validators.PriorityValidator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 
 public class PriorityServiceImp implements PriorityService {
 

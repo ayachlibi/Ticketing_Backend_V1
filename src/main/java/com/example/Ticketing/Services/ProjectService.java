@@ -7,15 +7,15 @@ import java.util.Optional;
 
 public interface ProjectService {
 
-    Project createProject( Project project);
+    Project create( Project project);
 
-    Project updateProject(Project project);
+    Project update(Project project);
 
     Optional<Project> findById (Long id);
 
     List<Project> findAll();
 
-    void deleteProject(Long id);
+    void delete(Long id);
 
 
 }

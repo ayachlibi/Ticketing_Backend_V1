@@ -17,6 +17,7 @@ import com.example.Ticketing.Validators.ClientValidator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -43,7 +44,7 @@ public class ClientServiceImp implements ClientService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public ResponseEntity<?> registerClient(ClientRequestModel clientRequestModel) {
+    public Client register(ClientRequestModel clientRequestModel) {
 
         List<String> errors = ClientValidator.validator(clientRequestModel);
         //All necessary information filled
@@ -71,15 +72,13 @@ public class ClientServiceImp implements ClientService {
 
         client.setRoles(roles);
 
-        clientRepository.save(client);
-
         // TODO: Change the return type
 
-        return ResponseEntity.ok("User registered successfully!");
+        return clientRepository.save(client);
     }
 
     @Override
-    public ResponseEntity<?> acceptClient(Client client) {
+    public ResponseEntity<?> accept(Client client) {
 
         client.setAccepted(true);
 
@@ -98,10 +97,10 @@ public class ClientServiceImp implements ClientService {
     }
 
     @Override
-    public void deleteClient(Long id) {
+    public void delete(Long id) {
 
         if (id == null){
-            log.error("Client ID is null");
+            throw new IllegalStateException("Client ID is null");
 
         }
         if (!clientRepository.existsById(id)){
@@ -111,17 +110,37 @@ public class ClientServiceImp implements ClientService {
     }
 
     @Override
-    public Client updateClient(Client client) {
-        if (!userRepository.existsById(client.getId())){
+    public Client update(Client client) {
+
+        if (!clientRepository.existsById(client.getId())){
             throw new EntityNotFoundException("The Client you are trying to Update does not exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
+
         if(userRepository.existsByEmail(client.getEmail())){
-            log.error("This Email Address Exist ");
+            throw new IllegalStateException("This Email Address Exist ");
         }
-        if(userRepository.existsByUsername(client.getUsername())){
-            log.error("This UserName Exist ");
+
+        User user = userRepository.findByUsername(client.getUsername())
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found" ));
+
+        if(!user.getEmail().equals(client.getEmail())){
+            user.setEmail(client.getEmail());
         }
+
+        if(!user.getName().equals(client.getName())){
+            user.setName(client.getName());
+        }
+
+        if(!user.getFamilyname().equals(client.getFamilyname())){
+            user.setFamilyname(client.getFamilyname());
+        }
+
+        if(user.getPhone_number() != client.getPhone_number()){
+            user.setPhone_number(client.getPhone_number());
+        }
+
         return clientRepository.save(client);
+
     }
 
     @Override
@@ -132,8 +151,8 @@ public class ClientServiceImp implements ClientService {
     @Override
     public Optional<Client> findById(Long id) {
         if (id == null){
-            log.error("Client ID is null");
-            return null;
+            throw new IllegalStateException("Client ID is null");
+
         }
         Optional<Client> client= clientRepository.findById(id);
         return Optional.of(client).orElseThrow(()-> new EntityNotFoundException

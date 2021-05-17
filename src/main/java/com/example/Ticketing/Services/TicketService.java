@@ -7,11 +7,11 @@ import java.util.Optional;
 
 public interface TicketService {
 
-    Ticket addTicket(Ticket ticket);
+    Ticket add(Ticket ticket);
 
-    Ticket updateTicket(Ticket ticket);
+    Ticket update(Ticket ticket);
 
-    void deleteTicket(Long id);
+    void delete(Long id);
 
     Optional<Ticket> findById(Long id);
 

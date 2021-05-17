@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface ClientAPI {
 
     @PostMapping(value = "/Client/RegisterClient", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> registerClient(@RequestBody ClientRequestModel client);
+    Client registerClient(@RequestBody ClientRequestModel client);
 
     @PutMapping(value = "/Client/Accept", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> acceptClient(@RequestBody Client client);

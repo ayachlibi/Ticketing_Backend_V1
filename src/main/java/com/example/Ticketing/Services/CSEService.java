@@ -10,13 +10,13 @@ import java.util.Optional;
 
 public interface CSEService {
 
-    ResponseEntity<?> registerCSE(CSERequestModel cseRequestModel);
+    ResponseEntity<?> register(CSERequestModel cseRequestModel);
 
-    ResponseEntity<?> acceptCse(CSE cse);
+    ResponseEntity<?> accept(CSE cse);
 
-    void deleteCse(Long id);
+    void delete(Long id);
 
-    CSE updateCse(CSE cse);
+    CSE update(CSE cse);
 
     List<CSE> findAll();
 

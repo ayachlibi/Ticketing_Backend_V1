@@ -28,17 +28,17 @@ public class ProjectController implements ProjectAPI {
 
     @Override
     public Project saveProject(Project project) {
-        return projectService.createProject(project);
+        return projectService.create(project);
     }
 
     @Override
     public void deleteProject(Long id) {
-        projectService.deleteProject(id);
+        projectService.delete(id);
     }
 
     @Override
     public Project updateProject(Project project) {
-        return projectService.updateProject(project);
+        return projectService.update(project);
     }
 
     @Override
