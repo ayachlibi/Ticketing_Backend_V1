@@ -1,5 +1,6 @@
 package com.example.Ticketing.Models;
 
+import com.example.Ticketing.Role.UserRole;
 import lombok.*;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.TypeAlias;
@@ -29,7 +30,6 @@ import java.util.List;
 
 public class Client extends User implements Serializable {
 
-
     @Transient
     public static final String SEQUENCE_NAME = "Client_sequence";
 
@@ -40,4 +40,16 @@ public class Client extends User implements Serializable {
     @DBRef(lazy = true)
     private List<Project> projects;
 
+    public Client(String firstname,
+                  String lastname,
+                  String email,
+                  String phone_number,
+                  String username,
+                  String password,
+                  UserRole role,
+                  String enterprise) {
+        super(firstname, lastname, email, phone_number, username, password, role);
+        this.enterprise = enterprise;
+
+    }
 }

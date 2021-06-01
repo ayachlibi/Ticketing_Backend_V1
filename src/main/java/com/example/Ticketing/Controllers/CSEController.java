@@ -32,7 +32,7 @@ public class CSEController implements CSEAPI {
 
 
     @Override
-    public ResponseEntity<?> registerCSE(CSERequestModel cse) {
+    public String registerCSE(CSERequestModel cse) {
         return cseService.register(cse);
     }
 

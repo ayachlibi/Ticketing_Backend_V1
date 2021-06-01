@@ -1,5 +1,6 @@
 package com.example.Ticketing.Repository;
 
+import com.example.Ticketing.Models.Client;
 import com.example.Ticketing.Models.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
@@ -10,7 +11,13 @@ import java.util.Optional;
 
 @Repository
 
-public interface UserRepository extends MongoRepository<User,Long> {
+public interface UserRepository extends MongoRepository<User,String> {
+
+    Optional<User> findByCostumeid(Long costumeid);
+
+    boolean existsByCostumeid(Long costumeid);
+
+    void deleteByCostumeid(Long costumeid);
 
     Optional<User> findByUsername(String username);
 

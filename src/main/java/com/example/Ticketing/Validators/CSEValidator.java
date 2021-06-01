@@ -22,7 +22,7 @@ public class CSEValidator {
         if (cse == null || !StringUtils.hasLength(cse.getPassword())) {
             errors.add("Please fill the Password Field");
         }
-        if (cse == null || cse.getPhone_number()==null) {
+        if (cse == null || !StringUtils.hasLength(cse.getPhone_number())) {
             errors.add("Please fill the phone number Field");
         }
 

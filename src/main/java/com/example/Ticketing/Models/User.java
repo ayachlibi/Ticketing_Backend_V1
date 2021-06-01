@@ -1,14 +1,18 @@
 package com.example.Ticketing.Models;
 
-import com.example.Ticketing.Role.Role;
+import com.example.Ticketing.Role.UserRole;
 import lombok.*;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import java.util.Collection;
+import java.util.Collections;
 
 @Data
 
@@ -25,48 +29,77 @@ import java.util.Set;
 @NoArgsConstructor
 
 
-public class User extends AbstractEntity {
+public class User extends AbstractEntity implements UserDetails {
 
     @Transient
     public static final String SEQUENCE_NAME = "User_sequence";
 
-    private String name;
+    private String firstname;
 
-    private String familyname;
+    private String lastname;
 
     @Indexed(unique = true)
     private String email;
 
-    private long phone_number;
+    private String phone_number;
 
     @Indexed(unique = true)
     private String username;
 
     private String password;
 
-    @DBRef
-    private Set<Role> roles= new HashSet<>();
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
+    private Boolean locked;
 
+    private Boolean enabled;
 
-    public User(String name,
-                String familyname,
+    public User(String firstname,
+                String lastname,
                 String email,
-                long phone_number,
+                String phone_number,
                 String username,
-                String password) {
-        this.name = name;
-        this.familyname = familyname;
+                String password,
+                UserRole role) {
+        this.firstname = firstname;
+        this.lastname = lastname;
         this.email = email;
         this.phone_number = phone_number;
         this.username = username;
         this.password = password;
-
+        this.role = role;
     }
 
-    public void setUsername(String name, String familyname) {
-        this.username = name + familyname;
+    public void setUsername(String firstname, String lastname) {
+        this.username = firstname + lastname;
     }
 
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        SimpleGrantedAuthority authority=
+                new SimpleGrantedAuthority(role.name());
+        return Collections.singletonList(authority);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return !locked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
 }

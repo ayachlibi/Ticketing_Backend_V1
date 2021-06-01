@@ -8,8 +8,6 @@ import com.example.Ticketing.Models.General_Manager;
 import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.General_ManagerRepository;
 import com.example.Ticketing.Repository.UserRepository;
-import com.example.Ticketing.Role.Role;
-import com.example.Ticketing.Role.RoleRepository;
 import com.example.Ticketing.Role.UserRole;
 import com.example.Ticketing.Services.General_ManagerService;
 import com.example.Ticketing.Validators.General_ManagerValidator;
@@ -17,10 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 
@@ -37,9 +33,6 @@ public class General_ManagerServiceImp implements General_ManagerService {
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
     @Override
     public General_Manager save(General_Manager gm) {
         List<String> errors = General_ManagerValidator.validator(gm);
@@ -55,20 +48,17 @@ public class General_ManagerServiceImp implements General_ManagerService {
             return null;
         }
 
-        gm.setUsername(gm.getName(),gm.getFamilyname());
-        gm.setId(sequenceGeneratorService.generateSequence(gm.SEQUENCE_NAME));
-        Set<Role> roles = new HashSet<>();
-        Role role = roleRepository.findByName(UserRole.GENERAL_DIRECTOR);
-        roles.add(role);
-        gm.setRoles(roles);
+        gm.setUsername(gm.getFirstname(),gm.getLastname());
+        gm.setCostumeid(sequenceGeneratorService.generateSequence(gm.SEQUENCE_NAME));
+        gm.setRole(UserRole.GENERAL_MANAGER);
 
         User u= new User();
         u.setEmail(gm.getEmail());
-        u.setName(gm.getName());
-        u.setFamilyname(gm.getFamilyname());
+        u.setFirstname(gm.getFirstname());
+        u.setLastname(gm.getLastname());
         u.setPhone_number(gm.getPhone_number());
         u.setPassword(gm.getPassword());
-        u.setRoles(gm.getRoles());
+        u.setRole(gm.getRole());
         u.setUsername(gm.getUsername());
         userRepository.save(u);
         return general_managerRepository.save(gm);
@@ -77,7 +67,7 @@ public class General_ManagerServiceImp implements General_ManagerService {
     @Override
     public General_Manager update(General_Manager gm) {
 
-        if (!userRepository.existsById(gm.getId())){
+        if (!userRepository.existsByCostumeid(gm.getCostumeid())){
             throw new EntityNotFoundException("GM Not Found",ErrorCodes.GENERAL_MANAGER_NOT_FOUND);
         }
         if(userRepository.existsByEmail(gm.getEmail())){
@@ -94,10 +84,10 @@ public class General_ManagerServiceImp implements General_ManagerService {
             log.error("GM ID is null");
 
         }
-        if (!general_managerRepository.existsById(id)){
+        if (!general_managerRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("GM Not Found", ErrorCodes.GENERAL_MANAGER_NOT_FOUND);
         }
-        general_managerRepository.deleteById(id);
+        general_managerRepository.deleteByCostumeid(id);
 
     }
 
@@ -107,7 +97,7 @@ public class General_ManagerServiceImp implements General_ManagerService {
             log.error("ID is null");
             return null;
         }
-        Optional<General_Manager> gm= general_managerRepository.findById(id);
+        Optional<General_Manager> gm= general_managerRepository.findByCostumeid(id);
         return Optional.of(gm).orElseThrow(()-> new EntityNotFoundException
                 ("No GM Found with the ID"+ id,ErrorCodes.GENERAL_MANAGER_NOT_FOUND));
     }

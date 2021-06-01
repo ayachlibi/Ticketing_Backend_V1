@@ -28,13 +28,13 @@ public class Priority extends AbstractEntity implements Serializable {
     @Transient
     public static final String SEQUENCE_NAME = "Priority_sequence";
 
-    private long sla_very_high;
+    private Long sla_very_high;
 
-    private long sla_high;
+    private Long sla_high;
 
-    private long sla_medium;
+    private Long sla_medium;
 
-    private long sla_low;
+    private Long sla_low;
 
     @DBRef(lazy = true)
     private Project project;

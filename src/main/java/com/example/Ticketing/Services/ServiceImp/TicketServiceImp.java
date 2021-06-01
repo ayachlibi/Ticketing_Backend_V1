@@ -33,7 +33,7 @@ public class TicketServiceImp implements TicketService {
             throw new InvalidEntityException("",(Throwable) errors, ErrorCodes.TICKET_NOT_VALID);
         }
 
-        ticket.setId(service.generateSequence(ticket.SEQUENCE_NAME));
+        ticket.setCostumeid(service.generateSequence(ticket.SEQUENCE_NAME));
 
         return ticketRepository.save(ticket);
     }
@@ -46,15 +46,15 @@ public class TicketServiceImp implements TicketService {
 
     @Override
     public void delete(Long id) {
-        if (!ticketRepository.existsById(id)){
+        if (!ticketRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("This Id doesn't match with any existing ticket ",ErrorCodes.TICKET_NOT_FOUND);
         }
-        ticketRepository.deleteById(id);
+        ticketRepository.deleteByCostumeid(id);
     }
 
     @Override
     public Optional<Ticket> findById(Long id) {
-        Optional< Ticket > ticket= ticketRepository.findById(id);
+        Optional< Ticket > ticket= ticketRepository.findByCostumeid(id);
         return Optional.of(ticket).orElseThrow(()-> new EntityNotFoundException
                 ("No ticket Found with the ID"+ id,ErrorCodes.TICKET_NOT_FOUND));
     }

@@ -19,7 +19,7 @@ public class ClientRequestModel {
 
     private String enterprise;
 
-    private Long phone_number;
+    private String phone_number;
 
     private String password;
 

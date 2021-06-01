@@ -11,11 +11,11 @@ public class General_ManagerValidator {
 
         List<String> errors = new ArrayList<>();
 
-        if (superAdmin == null || !StringUtils.hasLength(superAdmin.getName())) {
+        if (superAdmin == null || !StringUtils.hasLength(superAdmin.getFirstname())) {
             errors.add("Please fill the Name Field");
         }
 
-        if (superAdmin == null || !StringUtils.hasLength(superAdmin.getFamilyname())) {
+        if (superAdmin == null || !StringUtils.hasLength(superAdmin.getLastname())) {
             errors.add("Please fill the Family name Field");
         }
 

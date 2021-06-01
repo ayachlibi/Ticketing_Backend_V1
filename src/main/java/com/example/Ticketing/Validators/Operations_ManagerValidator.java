@@ -9,10 +9,10 @@ import java.util.List;
 public class Operations_ManagerValidator {
     public static List<String> validator(Operations_Manager operationsManager) {
         List<String> errors = new ArrayList<>();
-        if (operationsManager == null || !StringUtils.hasLength(operationsManager.getName())) {
+        if (operationsManager == null || !StringUtils.hasLength(operationsManager.getFirstname())) {
             errors.add("Please fill the Name Field");
         }
-        if (operationsManager == null || !StringUtils.hasLength(operationsManager.getFamilyname())) {
+        if (operationsManager == null || !StringUtils.hasLength(operationsManager.getLastname())) {
             errors.add("Please fill the Family name Field");
         }
         if (operationsManager == null || !StringUtils.hasLength(operationsManager.getEmail())) {

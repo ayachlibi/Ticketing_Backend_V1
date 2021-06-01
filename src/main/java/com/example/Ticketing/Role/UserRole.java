@@ -1,7 +1,7 @@
 package com.example.Ticketing.Role;
 
 public enum UserRole {
-    GENERAL_DIRECTOR,
+    GENERAL_MANAGER,
     OPERATIONS_MANAGER,
     CSE,
     CLIENT,

@@ -8,8 +8,6 @@ import com.example.Ticketing.Models.Operations_Manager;
 import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.Operations_ManagerRepository;
 import com.example.Ticketing.Repository.UserRepository;
-import com.example.Ticketing.Role.Role;
-import com.example.Ticketing.Role.RoleRepository;
 import com.example.Ticketing.Role.UserRole;
 import com.example.Ticketing.Services.Operations_ManagerService;
 import com.example.Ticketing.Validators.Operations_ManagerValidator;
@@ -17,11 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-
 @Service
 
 @Slf4j
@@ -35,9 +30,6 @@ public class Operations_ManagerServiceImp implements Operations_ManagerService {
 
     @Autowired
     private SequenceGeneratorService sequenceGeneratorService;
-
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Override
     public Operations_Manager save(Operations_Manager om) {
@@ -54,20 +46,16 @@ public class Operations_ManagerServiceImp implements Operations_ManagerService {
             return null;
         }
 
-        om.setUsername(om.getName(),om.getFamilyname());
-        om.setId(sequenceGeneratorService.generateSequence(om.SEQUENCE_NAME));
-        Set<Role> roles = new HashSet<>();
-        Role role = roleRepository.findByName(UserRole.OPERATIONS_MANAGER);
-        roles.add(role);
-        om.setRoles(roles);
-
+        om.setUsername(om.getFirstname(),om.getLastname());
+        om.setCostumeid(sequenceGeneratorService.generateSequence(om.SEQUENCE_NAME));
+        om.setRole(UserRole.OPERATIONS_MANAGER);
         User u= new User();
         u.setEmail(om.getEmail());
-        u.setName(om.getName());
-        u.setFamilyname(om.getFamilyname());
+        u.setFirstname(om.getFirstname());
+        u.setLastname(om.getLastname());
         u.setPhone_number(om.getPhone_number());
         u.setPassword(om.getPassword());
-        u.setRoles(om.getRoles());
+        u.setRole(om.getRole());
         u.setUsername(om.getUsername());
         userRepository.save(u);
         return operations_managerRepository.save(om);
@@ -76,7 +64,7 @@ public class Operations_ManagerServiceImp implements Operations_ManagerService {
     @Override
     public Operations_Manager update(Operations_Manager om) {
 
-        if (!userRepository.existsById(om.getId())){
+        if (!userRepository.existsById(om.getMongoid())){
             throw new EntityNotFoundException("OM Not Found",ErrorCodes.OPERATIONS_MANAGER_NOT_FOUND);
         }
         if(userRepository.existsByEmail(om.getEmail())){
@@ -93,10 +81,10 @@ public class Operations_ManagerServiceImp implements Operations_ManagerService {
             log.error("OM ID is null");
 
         }
-        if (!operations_managerRepository.existsById(id)){
+        if (!operations_managerRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("OM Not Found", ErrorCodes.OPERATIONS_MANAGER_NOT_FOUND);
         }
-        operations_managerRepository.deleteById(id);
+        operations_managerRepository.deleteByCostumeid(id);
 
     }
 
@@ -106,7 +94,7 @@ public class Operations_ManagerServiceImp implements Operations_ManagerService {
             log.error("ID is null");
             return null;
         }
-        Optional<Operations_Manager> om= operations_managerRepository.findById(id);
+        Optional<Operations_Manager> om= operations_managerRepository.findByCostumeid(id);
         return Optional.of(om).orElseThrow(()-> new EntityNotFoundException
                 ("No OM Found with the ID"+ id,ErrorCodes.OPERATIONS_MANAGER_NOT_FOUND));
 

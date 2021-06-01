@@ -9,8 +9,6 @@ import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.ClientRepository;
 import com.example.Ticketing.Repository.UserRepository;
 import com.example.Ticketing.RequestModel.ClientRequestModel;
-import com.example.Ticketing.Role.Role;
-import com.example.Ticketing.Role.RoleRepository;
 import com.example.Ticketing.Role.UserRole;
 import com.example.Ticketing.Services.ClientService;
 import com.example.Ticketing.Validators.ClientValidator;
@@ -27,9 +25,6 @@ import java.util.*;
 
 @Slf4j
 public class ClientServiceImp implements ClientService {
-
-    @Autowired
-    RoleRepository roleRepository;
 
     @Autowired
     UserRepository userRepository;
@@ -58,20 +53,14 @@ public class ClientServiceImp implements ClientService {
         Client client= new Client();
         client.setEnterprise(clientRequestModel.getEnterprise());
         client.setPhone_number(clientRequestModel.getPhone_number());
-        client.setName(clientRequestModel.getName());
-        client.setFamilyname(clientRequestModel.getFamilyname());
+        client.setFirstname(clientRequestModel.getName());
+        client.setLastname(clientRequestModel.getFamilyname());
         client.setEmail(clientRequestModel.getEmail());
         client.setPassword(passwordEncoder.encode(clientRequestModel.getPassword()));
-        client.setUsername(client.getName(),client.getFamilyname());
-        client.setId(service.generateSequence(client.SEQUENCE_NAME));
+        client.setUsername(client.getFirstname(),client.getLastname());
+        client.setCostumeid(service.generateSequence(client.SEQUENCE_NAME));
 
-        Set<Role> roles = new HashSet<>();
-
-        Role role = roleRepository.findByName(UserRole.CLIENT);
-        roles.add(role);
-
-        client.setRoles(roles);
-
+        client.setRole(UserRole.CLIENT);
         // TODO: Change the return type
 
         return clientRepository.save(client);
@@ -84,13 +73,13 @@ public class ClientServiceImp implements ClientService {
 
         User user=new User();
         user.setUsername(client.getUsername());
-        user.setName(client.getName());
-        user.setFamilyname(client.getFamilyname());
+        user.setFirstname(client.getFirstname());
+        user.setLastname(client.getLastname());
         user.setPassword(client.getPassword());
         user.setPhone_number(client.getPhone_number());
         user.setEmail(client.getEmail());
-        user.setId(service.generateSequence(user.SEQUENCE_NAME));
-        user.setRoles(client.getRoles());
+        user.setCostumeid(service.generateSequence(user.SEQUENCE_NAME));
+        user.setRole(client.getRole());
         userRepository.save(user);
         return ResponseEntity.ok("Client Accepted");
 
@@ -103,16 +92,19 @@ public class ClientServiceImp implements ClientService {
             throw new IllegalStateException("Client ID is null");
 
         }
-        if (!clientRepository.existsById(id)){
+        if (!clientRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("This Client does not exist", ErrorCodes.CLIENT_NOT_FOUND);
         }
-        clientRepository.deleteById(id);
+
+        Optional<Client> client= clientRepository.findByCostumeid(id);
+
+        clientRepository.deleteByCostumeid(id);
     }
 
     @Override
     public Client update(Client client) {
 
-        if (!clientRepository.existsById(client.getId())){
+        if (!clientRepository.existsByCostumeid(client.getCostumeid())){
             throw new EntityNotFoundException("The Client you are trying to Update does not exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
 
@@ -127,12 +119,12 @@ public class ClientServiceImp implements ClientService {
             user.setEmail(client.getEmail());
         }
 
-        if(!user.getName().equals(client.getName())){
-            user.setName(client.getName());
+        if(!user.getFirstname().equals(client.getFirstname())){
+            user.setFirstname(client.getFirstname());
         }
 
-        if(!user.getFamilyname().equals(client.getFamilyname())){
-            user.setFamilyname(client.getFamilyname());
+        if(!user.getLastname().equals(client.getLastname())){
+            user.setLastname(client.getLastname());
         }
 
         if(user.getPhone_number() != client.getPhone_number()){
@@ -150,11 +142,13 @@ public class ClientServiceImp implements ClientService {
 
     @Override
     public Optional<Client> findById(Long id) {
+
         if (id == null){
             throw new IllegalStateException("Client ID is null");
 
         }
-        Optional<Client> client= clientRepository.findById(id);
+
+        Optional<Client> client= clientRepository.findByCostumeid(id);
         return Optional.of(client).orElseThrow(()-> new EntityNotFoundException
                 ("No Client Found with the ID"+ id,ErrorCodes.CLIENT_NOT_FOUND));
     }

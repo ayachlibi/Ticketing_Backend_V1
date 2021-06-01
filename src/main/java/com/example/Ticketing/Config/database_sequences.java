@@ -19,7 +19,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class database_sequences {
 
     @Id
-
     private String id;
 
     private long seq;

@@ -1,5 +1,6 @@
 package com.example.Ticketing.Models;
 
+import com.example.Ticketing.Role.UserRole;
 import lombok.*;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.TypeAlias;
@@ -33,5 +34,13 @@ public class Operations_Manager extends User implements Serializable {
     @Transient
     public static final String SEQUENCE_NAME = "Operations_Manager_sequence";
 
-
+    public Operations_Manager(String firstname,
+                              String lastname,
+                              String email,
+                              String phone_number,
+                              String username,
+                              String password,
+                              UserRole role) {
+        super(firstname, lastname, email, phone_number, username, password, role);
+    }
 }

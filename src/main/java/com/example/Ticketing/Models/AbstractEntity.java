@@ -7,6 +7,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -21,10 +22,13 @@ import java.time.LocalDate;
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @Id
-    @Field("my_object_id")
-    private Long id;
+    @Field("mongo_id")
+    private String mongoid;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+   private Long costumeid;
+
+   @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     @CreatedDate
     private LocalDate Created_At;
 

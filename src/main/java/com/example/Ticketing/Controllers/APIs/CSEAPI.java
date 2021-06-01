@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface CSEAPI {
 
     @PostMapping(value = "/CSE/RegisterCSE", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    ResponseEntity<?> registerCSE(@RequestBody CSERequestModel cse);
+    String registerCSE(@RequestBody CSERequestModel cse);
 
     @PutMapping(value = "/CSE/Accept", produces = MediaType.APPLICATION_JSON_VALUE)
     ResponseEntity<?> acceptCSE(@RequestBody CSE cse);

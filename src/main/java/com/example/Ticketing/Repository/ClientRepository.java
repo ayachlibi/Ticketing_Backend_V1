@@ -9,7 +9,13 @@ import java.util.Optional;
 
 @Repository
 
-public interface ClientRepository extends MongoRepository<Client,Long> {
+public interface ClientRepository extends MongoRepository<Client,String> {
 
     Client findByUsername(String username);
+
+    Optional<Client> findByCostumeid(Long costumeid);
+
+    boolean existsByCostumeid(Long costumeid);
+
+    void deleteByCostumeid(Long costumeid);
 }

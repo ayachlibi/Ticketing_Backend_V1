@@ -35,7 +35,7 @@ public class ProjectServiceImp implements ProjectService {
 
         priorityService.createPriority(project);
 
-        project.setId(service.generateSequence(project.SEQUENCE_NAME));
+        project.setCostumeid(service.generateSequence(project.SEQUENCE_NAME));
 
         return projectRepository.save(project);
 
@@ -44,7 +44,7 @@ public class ProjectServiceImp implements ProjectService {
     @Override
     public Project update(Project project) {
 
-        if(!projectRepository.existsById(project.getId())){
+        if(!projectRepository.existsById(project.getMongoid())){
             throw new EntityNotFoundException("The project you are trying to update does not exist",
                     ErrorCodes.PROJECT_NOT_FOUND);
         }
@@ -58,7 +58,7 @@ public class ProjectServiceImp implements ProjectService {
 
     @Override
     public Optional<Project> findById(Long id) {
-       Optional< Project > project = projectRepository.findById(id);
+       Optional< Project > project = projectRepository.findByCostumeid(id);
         return Optional.of(project).orElseThrow(()-> new EntityNotFoundException
                 ("No Project Found with the ID"+ id,ErrorCodes.PROJECT_NOT_FOUND));
 
@@ -72,9 +72,9 @@ public class ProjectServiceImp implements ProjectService {
     @Override
     public void delete(Long id) {
 
-        if (!projectRepository.existsById(id)){
+        if (!projectRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("This Project does not exist", ErrorCodes.PROJECT_NOT_FOUND);
         }
-        projectRepository.deleteById(id);
+        projectRepository.deleteByCostumeid(id);
     }
 }

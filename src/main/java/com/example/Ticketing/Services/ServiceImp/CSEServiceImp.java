@@ -9,28 +9,23 @@ import com.example.Ticketing.Models.User;
 import com.example.Ticketing.Repository.CSERepository;
 import com.example.Ticketing.Repository.UserRepository;
 import com.example.Ticketing.RequestModel.CSERequestModel;
-import com.example.Ticketing.Role.Role;
-import com.example.Ticketing.Role.RoleRepository;
 import com.example.Ticketing.Role.UserRole;
 import com.example.Ticketing.Services.CSEService;
 import com.example.Ticketing.Validators.CSEValidator;
-import lombok.extern.slf4j.Slf4j;
+import com.example.Ticketing.Validators.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 @Service
 
-@Slf4j
-
 public class CSEServiceImp implements CSEService {
 
-
     @Autowired
-    RoleRepository roleRepository;
+    EmailValidator emailValidator;
 
     @Autowired
     UserRepository userRepository;
@@ -42,57 +37,71 @@ public class CSEServiceImp implements CSEService {
     SequenceGeneratorService service;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    UserService userService;
+
 
     @Override
-    public ResponseEntity<?> register (CSERequestModel cseRequestModel) {
+    public String register (CSERequestModel cseRequestModel) {
+
         List<String> errors = CSEValidator.validator(cseRequestModel);
         //All necessary information filled
+
         if (!errors.isEmpty()){
-            throw new InvalidEntityException("This cse is Invalid", (Throwable) errors,ErrorCodes.CSE_NOT_VALID);
+            throw new InvalidEntityException("This cse is Invalid",
+                    (Throwable) errors,
+                    ErrorCodes.CSE_NOT_VALID);
         }
-        if (userRepository.existsByEmail(cseRequestModel.getEmail())){
+
+        //Validate the email address
+        Boolean isValidEmail = emailValidator.test(cseRequestModel.getEmail());
+
+        if (!isValidEmail) {
+            throw new IllegalStateException("Email not valid");
+        }
+
+        if (cseRepository.existsByEmail(cseRequestModel.getEmail())){
             throw new IllegalStateException("This email already Exists!");
         }
 
-        CSE cse= new CSE();
-        cse.setPhone_number(cseRequestModel.getPhone_number());
-        cse.setName(cseRequestModel.getName());
-        cse.setFamilyname(cseRequestModel.getFamilyname());
-        cse.setEmail(cseRequestModel.getEmail());
-        cse.setPassword(passwordEncoder.encode(cseRequestModel.getPassword()));
-        cse.setUsername(cse.getName(),cseRequestModel.getFamilyname());
-        cse.setId(service.generateSequence(cse.SEQUENCE_NAME));
+        CSE cse= new CSE(
+                cseRequestModel.getName(),
+                cseRequestModel.getFamilyname(),
+                cseRequestModel.getEmail(),
+                cseRequestModel.getPhone_number(),
+                cseRequestModel.getName()+ cseRequestModel.getFamilyname(),
+                bCryptPasswordEncoder.encode(cseRequestModel.getPassword()),
+                UserRole.CSE
+                );
 
-        Set<Role> roles = new HashSet<>();
-
-        Role role = roleRepository.findByName(UserRole.CSE);
-        roles.add(role);
-
-        cse.setRoles(roles);
+        cse.setCostumeid(service.generateSequence(cse.SEQUENCE_NAME));
 
         cseRepository.save(cse);
-
         // TODO: Change the return type
 
-        return ResponseEntity.ok("User registered successfully!");
+        return null;
     }
 
     @Override
     public ResponseEntity<?> accept(CSE cse) {
+
         //Accept the client
         cse.setAccepted(true);
 
-        //Create a new user( for the Login )
-        User user=new User();
-        user.setUsername(cse.getUsername());
-        user.setName(cse.getName());
-        user.setFamilyname(cse.getFamilyname());
-        user.setPassword(cse.getPassword());
-        user.setPhone_number(cse.getPhone_number());
-        user.setEmail(cse.getEmail());
-        user.setId(service.generateSequence(user.SEQUENCE_NAME));
-        user.setRoles(cse.getRoles());
+        //Create the account
+        User user= new User(
+                cse.getFirstname(),
+                cse.getLastname(),
+                cse.getEmail(),
+                cse.getPhone_number(),
+                cse.getUsername(),
+                cse.getPassword(),
+                cse.getRole()
+        );
+
+        user.setCostumeid(service.generateSequence(user.SEQUENCE_NAME));
         userRepository.save(user);
         return ResponseEntity.ok("CSE Accepted");
     }
@@ -100,29 +109,23 @@ public class CSEServiceImp implements CSEService {
     @Override
     public void delete(Long id) {
 
-        if (id == null){
-            log.error("CSE ID is null");
-
-        }
-        if (!cseRepository.existsById(id)){
+        if (!cseRepository.existsByCostumeid(id)){
             throw new EntityNotFoundException("This CSE does not exist", ErrorCodes.CLIENT_NOT_FOUND);
         }
-        cseRepository.deleteById(id);
+        cseRepository.deleteByCostumeid(id);
 
 
     }
 
     @Override
     public CSE update(CSE cse) {
-        if (!cseRepository.existsById(cse.getId())){
+        if (!cseRepository.existsByCostumeid(cse.getCostumeid())){
             throw new EntityNotFoundException("The Client you are trying to Update does not exist",ErrorCodes.CLIENT_NOT_FOUND);
         }
         if(userRepository.existsByEmail(cse.getEmail())){
-            log.error("This Email Address Exist ");
+            throw new IllegalStateException("This Email Address Exist ");
         }
         User user= userRepository.findByEmail(cse.getEmail());
-
-
 
         return cseRepository.save(cse);
     }
@@ -134,12 +137,9 @@ public class CSEServiceImp implements CSEService {
 
     @Override
     public Optional<CSE> findById(Long id) {
-        if (id == null){
-            log.error("Client ID is null");
-            return null;
-        }
 
-        Optional<CSE> cse= cseRepository.findById(id);
+
+        Optional<CSE> cse= cseRepository.findByCostumeid(id);
         return Optional.of(cse).orElseThrow(()-> new EntityNotFoundException
                 ("No CSE Found with the ID"+ id,ErrorCodes.CSE_NOT_FOUND));
     }

@@ -1,6 +1,6 @@
 package com.example.Ticketing.Config.Security.jwt;
 
-import com.example.Ticketing.Models.UserDet;
+import com.example.Ticketing.Models.User;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,11 +9,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.*;
+import java.io.IOException;
 import java.util.Date;
 
 @PropertySource(value = {"classpath:application.properties"})
 @Component
-public class JwtUtils {
+public class JwtUtils implements Filter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
@@ -24,7 +26,7 @@ public class JwtUtils {
     private int jwtExpiration;
 
     public String GenerateJwtToken(Authentication authentication){
-        UserDet userPrincipal = (UserDet) authentication.getPrincipal();
+        User userPrincipal = (User) authentication.getPrincipal();
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getUsername())
@@ -54,5 +56,10 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    @Override
+    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+
     }
 }

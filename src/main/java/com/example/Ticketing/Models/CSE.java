@@ -1,5 +1,6 @@
 package com.example.Ticketing.Models;
 
+import com.example.Ticketing.Role.UserRole;
 import lombok.*;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.annotation.TypeAlias;
@@ -28,6 +29,7 @@ import java.util.List;
 @TypeAlias("CSE")
 
 public class CSE extends User implements Serializable {
+
     @Transient
     public static final String SEQUENCE_NAME = "CSE_sequence";
 
@@ -35,4 +37,14 @@ public class CSE extends User implements Serializable {
 
     private List<Project> projects;
 
+    public CSE(String firstname,
+               String lastname,
+               String email,
+               String phone_number,
+               String username,
+               String password,
+               UserRole role) {
+        super(firstname, lastname, email, phone_number, username, password, role);
+
+    }
 }

@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface CSEService {
 
-    ResponseEntity<?> register(CSERequestModel cseRequestModel);
+    String register(CSERequestModel cseRequestModel);
 
     ResponseEntity<?> accept(CSE cse);
 
